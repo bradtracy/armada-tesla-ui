@@ -14,8 +14,13 @@ const ProvideSignInURL = (props) => {
     return (
         <Grid container justifyContent="center" >
             <Grid item>
+                <Link href={props.loginURL} underline="always" target="_blank" rel="noreferrer" variant='h5'>
+                    Click to open Tesla Login page
+                </Link>
+                <br />
+                <br />
                 <Typography component="h6" variant="h6">
-                    Please open URL and Login. After log in you will see the page below, you may be automatically logged in.
+                    After log in you will see the page below, you may be automatically logged in.
                 </Typography>
                 <Box
                     component="img"
@@ -30,9 +35,6 @@ const ProvideSignInURL = (props) => {
                 />
                 <Box component="form" onSubmit={next} noValidate sx={{ mt: 1 }}>
                     <Grid container justifyContent="center" >
-                        <Link href={props.loginURL} underline="hover" target="_blank" rel="noreferrer">
-                            Click here to open Tesla Login page
-                        </Link>
                         <Button
                             type="submit"
                             fullWidth

@@ -19,7 +19,7 @@ const Home = (props) => {
   const {appState} = props;
   const [loginURL, setLoginURL] = useState('');
   const [user, setUser] = useState('');
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(3);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
