@@ -45,19 +45,22 @@ const Controls = (props) => {
     })
   };
 
+  // to load example data replace res.json() with vehicleTestData
   const getData = (e) => {
     e.preventDefault();
-    props.appState.getData(props.user)
+    props.appState.getData('props.user')
     .then(( res ) => {
       setTeslaData(res.json())
-      props.setSuccess('Data Request Successfull')
-      if ( res === 404 ) {
-        props.setError('No Data to show')
-      } else {
+      console.log(res)
+      if ( res.status === 200 ) {
+        props.setSuccess('Data Request Successfull')
         setShowData(true)
+      } else {
+        props.setError('Data Request Failed');
       }
     }).catch( (err) => {
       props.setError('Data Request Failed');
+      console.log(err);
     })
   };
 
@@ -132,99 +135,109 @@ const Controls = (props) => {
     )
   }
 
-  const DataTable = (display_name) => {
-    if ( !!teslaData ) {
+  const DataTable = () => {
+    console.log(Object.keys(teslaData).length)
+    if (Object.keys(teslaData).length === 0) {
       return (
         <Grid container justifyContent="center">
           <Grid item>
-            <Typography component="h4" variant="h4">
-              No Data
+            <Typography component="h5" variant="h5">
+              {teslaData.display_name}
+            </Typography>
+          </Grid>
+          <br/>
+          <br/>
+          <Grid item>
+            <Typography component="h5" variant="h5">
+              No Data Available
             </Typography>
           </Grid>
         </Grid>
       )
     }
-    return (
-      <Grid style={{ margin: '10px 0', border: 'medium solid gray'}}>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Typography component="h4" variant="h4">
-              {display_name}
-            </Typography>
+    if ( Object.keys(teslaData).length > 1 ) {
+      return (
+        <Grid style={{ margin: '10px 0', border: 'medium solid gray'}}>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography component="h5" variant="h5">
+                {teslaData.display_name}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography component="h6" variant="h6">
+                Climate State
+              </Typography>
+            </Grid>
+            <Grid item xs={11}>
+              <List>
+              { Object.entries(climateStateList()).map( (valArry) => {
+                  return <DataListItem key={valArry[0].toLowerCase().replace(' ', '')} text={valArry[0]} value={valArry[1]} />
+              }) }
+              </List>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography component="h6" variant="h6">
+                Vehicle State
+              </Typography>
+            </Grid>
+            <Grid item xs={11}>
+              <List>
+              { Object.entries(vehicleStateList()).map( (valArry) => {
+                  return <DataListItem key={valArry[0].toLowerCase().replace(' ', '')} text={valArry[0]} value={valArry[1]} />
+              }) }
+              </List>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography component="h6" variant="h6">
+                Vehicle Config
+              </Typography>
+            </Grid>
+            <Grid item xs={11}>
+              <List>
+              { Object.entries(vehicleConfigList()).map( (valArry) => {
+                  return <DataListItem key={valArry[0].toLowerCase().replace(' ', '')} text={valArry[0]} value={valArry[1]} />
+              }) }
+              </List>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography component="h6" variant="h6">
+                Drive State
+              </Typography>
+            </Grid>
+            <Grid item xs={11}>
+              <List>
+              { Object.entries(driveStateList()).map( (valArry) => {
+                  return <DataListItem key={valArry[0].toLowerCase().replace(' ', '')} text={valArry[0]} value={valArry[1]} />
+              }) }
+              </List>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography component="h6" variant="h6">
+                Charging State
+              </Typography>
+            </Grid>
+            <Grid item xs={11}>
+              <List>
+              { Object.entries(chargingStateList()).map( (valArry) => {
+                  return <DataListItem key={valArry[0].toLowerCase().replace(' ', '')} text={valArry[0]} value={valArry[1]} />
+              }) }
+              </List>
+            </Grid>
           </Grid>
         </Grid>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Typography component="h6" variant="h6">
-              Climate State
-            </Typography>
-          </Grid>
-          <Grid item xs={11}>
-            <List>
-            { Object.entries(climateStateList()).map( (valArry) => {
-                return <DataListItem text={valArry[0]} value={valArry[1]} />
-            }) }
-            </List>
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Typography component="h6" variant="h6">
-              Vehicle State
-            </Typography>
-          </Grid>
-          <Grid item xs={11}>
-            <List>
-            { Object.entries(vehicleStateList()).map( (valArry) => {
-                return <DataListItem text={valArry[0]} value={valArry[1]} />
-            }) }
-            </List>
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Typography component="h6" variant="h6">
-              Vehicle Config
-            </Typography>
-          </Grid>
-          <Grid item xs={11}>
-            <List>
-            { Object.entries(vehicleConfigList()).map( (valArry) => {
-                return <DataListItem text={valArry[0]} value={valArry[1]} />
-            }) }
-            </List>
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Typography component="h6" variant="h6">
-              Drive State
-            </Typography>
-          </Grid>
-          <Grid item xs={11}>
-            <List>
-            { Object.entries(driveStateList()).map( (valArry) => {
-                return <DataListItem text={valArry[0]} value={valArry[1]} />
-            }) }
-            </List>
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Typography component="h6" variant="h6">
-              Charging State
-            </Typography>
-          </Grid>
-          <Grid item xs={11}>
-            <List>
-            { Object.entries(chargingStateList()).map( (valArry) => {
-                return <DataListItem text={valArry[0]} value={valArry[1]} />
-            }) }
-            </List>
-          </Grid>
-        </Grid>
-      </Grid>
-    )
+      )
+    }
   }
 
   return (
@@ -276,7 +289,7 @@ const Controls = (props) => {
               </Button>
             </Grid>
           </Grid>
-          { showData? <DataTable data={ teslaData.display_name } /> : null  }
+          { showData? <DataTable /> : null  }
         </Box>
     </>
   );
